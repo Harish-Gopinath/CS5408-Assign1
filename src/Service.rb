@@ -5,6 +5,7 @@ require 'json'
 require './DAO'
 set :show_exceptions, :after_handler
 set :port, 8080
+set :bind, '0.0.0.0'
 
 cluster = ClusterHelper.new()
 before do
@@ -14,8 +15,11 @@ end
 
 namespace '/api/v1' do
   get '/crimes' do
-    querySet = params[:q].split('=')
-    if isValidQueryLength(querySet) && isValidQueryFields(querySet)
+      querySet = params[:q].nil? ? [] : params[:q].split('=')
+      if querySet.length == 0
+        response = DAO.new(cluster).getAll()
+        paginateResponse(response,"crimes")
+    elsif isValidQueryLength(querySet) && isValidQueryFields(querySet)
         response = DAO.new(cluster).getByQuerySet(querySet)
         paginateResponse(response,"crimes")
     else
@@ -58,8 +62,7 @@ def paginateResponse(apiResponse,apiKey)
 end
 
 def isValidQueryLength(querySet)
-    querySetLength = querySet.length
-    querySetLength == 0 ||  querySetLength == 2
+     querySet.length == 2
 end
 
 def isValidQueryFields(querySet)
