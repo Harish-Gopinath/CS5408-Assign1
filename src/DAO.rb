@@ -30,4 +30,14 @@ class DAO
     closeSession()
     return resultSet 
   end
+  
+  def getAll()
+      createSession()
+      resultSet = []
+      @session.execute("select * from philadelphia").each do |row|
+          resultSet << row
+      end
+      closeSession()
+      return resultSet
+  end
 end
