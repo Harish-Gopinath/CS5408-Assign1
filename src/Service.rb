@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'sinatra/namespace'
 require 'will_paginate/array'
-require 'sinatra/cross_origin'
 require 'json'
 require './DAO'
 set :show_exceptions, :after_handler
