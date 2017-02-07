@@ -20,6 +20,9 @@ end
 cluster = ClusterHelper.new()
 
 namespace '/api/v1' do
+  get '/healthCheck' do
+  end
+
   get '/crimes' do
       querySet = params[:q].nil? ? [] : params[:q].split('=')
       if querySet.length == 0
