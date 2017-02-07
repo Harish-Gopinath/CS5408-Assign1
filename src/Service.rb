@@ -1,17 +1,23 @@
 require 'sinatra'
 require 'sinatra/namespace'
 require 'will_paginate/array'
+require 'sinatra/cross_origin'
 require 'json'
 require './DAO'
 set :show_exceptions, :after_handler
 set :port, 8080
 set :bind, '0.0.0.0'
 
-cluster = ClusterHelper.new()
+configure do
+    enable :cross_origin
+end
+
 before do
     content_type 'application/json'
     response.headers["date"] = DateTime.now.to_s
 end
+
+cluster = ClusterHelper.new()
 
 namespace '/api/v1' do
   get '/crimes' do
