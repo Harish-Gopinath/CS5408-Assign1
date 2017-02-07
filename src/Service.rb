@@ -8,13 +8,14 @@ set :show_exceptions, :after_handler
 set :port, 8080
 set :bind, '0.0.0.0'
 
-configure do
-    enable :cross_origin
-end
-
 before do
     content_type 'application/json'
     response.headers["date"] = DateTime.now.to_s
+    response.headers["Access-Control-Allow-Origin"] = "*"
+end
+
+configure do
+    enable :cross_origin
 end
 
 cluster = ClusterHelper.new()
